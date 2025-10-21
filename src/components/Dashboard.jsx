@@ -114,6 +114,7 @@ export default function Dashboard({
   const { t } = useLanguage();
   const [filterType, setFilterType] = useState("all");
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const toggleSidebar = () => setSidebarOpen(prev => !prev);
   const [windowWidth, setWindowWidth] = useState(
     typeof window !== "undefined" ? window.innerWidth : 1024,
   );
@@ -275,7 +276,7 @@ export default function Dashboard({
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                onClick={() => setSidebarOpen(false)}
+                onClick={toggleSidebar}
                 className="fixed inset-0 bg-black/50 z-40 md:hidden"
                 style={{ willChange: 'transform, opacity' }}
               />
@@ -300,7 +301,7 @@ export default function Dashboard({
                 <Button
                   variant="ghost"
                   size="icon"
-                  onClick={() => setSidebarOpen(false)}
+                  onClick={toggleSidebar}
                   className="md:hidden rounded-lg"
                 >
                   <X className="w-5 h-5" />
@@ -415,14 +416,18 @@ export default function Dashboard({
 
       {/* Main Content */}
       <div className="flex-1 pt-12 p-4 sm:p-6 md:p-8 overflow-x-hidden">
-        <div className="md:hidden mb-6 flex items-center gap-4">
+        <div className="mb-6 flex items-center gap-4">
           <Button
             variant="outline"
             size="icon"
-            onClick={() => setSidebarOpen(true)}
-            className="rounded-xl dark:bg-gray-800 dark:border-gray-700"
+            onClick={toggleSidebar}
+            className="rounded-xl dark:bg-gray-800 dark:border-gray-700 transition-all"
           >
-            <Menu className="w-5 h-5" />
+            {sidebarOpen ? (
+              <X className="w-5 h-5" />
+            ) : (
+              <Menu className="w-5 h-5" />
+            )}
           </Button>
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-400 to-green-400 flex items-center justify-center">

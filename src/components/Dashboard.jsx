@@ -1,3 +1,11 @@
+/* tailwind safelist:
+bg-gradient-to-br from-blue-400 to-blue-500 to-green-400 from-purple-400 to-purple-500 from-green-400 to-green-500
+from-yellow-400 to-orange-500 from-pink-400 to-pink-500 from-indigo-400 to-indigo-500
+text-blue-600 text-blue-400 text-purple-600 text-purple-400 text-green-600 text-green-400 text-orange-600 text-orange-400 text-pink-600 text-pink-400 text-indigo-600 text-indigo-400
+bg-blue-50 bg-blue-900/20 bg-purple-50 bg-purple-900/20 bg-green-50 bg-green-900/20 bg-orange-50 bg-orange-900/20 bg-pink-50 bg-pink-900/20 bg-indigo-50 bg-indigo-900/20
+dark:bg-gray-900 dark:border-gray-700 dark:text-white dark:hover:bg-gray-800
+hover:bg-blue-100/60 hover:bg-red-500 dark:hover:bg-red-600
+*/
 // NOTE: This Dashboard component includes its own sidebar/navigation and does NOT require the global Navbar.
 // When navigating to the Dashboard route, the global Navbar should not be displayed.
 // Libraries
@@ -257,7 +265,7 @@ export default function Dashboard({
   };
 
   return (
-    <div className="min-h-screen flex">
+    <div className="min-h-screen bg-white dark:bg-gray-900 flex font-sans">
       {/* Sidebar */}
       <AnimatePresence>
         {(sidebarOpen || windowWidth >= 768) && (
@@ -269,6 +277,7 @@ export default function Dashboard({
                 exit={{ opacity: 0 }}
                 onClick={() => setSidebarOpen(false)}
                 className="fixed inset-0 bg-black/50 z-40 md:hidden"
+                style={{ willChange: 'transform, opacity' }}
               />
             )}
             <motion.aside
@@ -277,6 +286,7 @@ export default function Dashboard({
               exit={{ x: -300 }}
               transition={{ type: "spring", damping: 20 }}
               className="fixed md:sticky top-0 left-0 h-screen w-64 bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-700 p-6 z-50 overflow-y-auto theme-transition"
+              style={{ willChange: 'transform, opacity' }}
             >
               <div className="flex items-center justify-between mb-8">
                 <div className="flex items-center gap-2">
@@ -430,6 +440,7 @@ export default function Dashboard({
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
+              style={{ willChange: 'transform, opacity' }}
             >
               <h1 className="text-2xl sm:text-3xl md:text-4xl text-gray-800 dark:text-white mb-2 theme-transition">
                 {t("dashboard.welcome")} {randomName}! 👋
@@ -445,6 +456,7 @@ export default function Dashboard({
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.1 }}
+                style={{ willChange: 'transform, opacity' }}
               >
                 <Card className="w-full p-6 md:p-8 bg-gradient-to-br from-blue-400 to-green-400 border-0 shadow-xl rounded-2xl text-white relative overflow-hidden h-48">
                   <div className="absolute top-0 right-0 w-24 h-24 md:w-32 md:h-32 bg-white/10 rounded-full -mr-12 -mt-12 md:-mr-16 md:-mt-16"></div>
@@ -464,6 +476,7 @@ export default function Dashboard({
                           ease: "linear",
                         }}
                         className="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center"
+                        style={{ willChange: 'transform, opacity' }}
                       >
                         <Coins className="w-5 h-5 md:w-6 md:h-6" />
                       </motion.div>
@@ -479,6 +492,7 @@ export default function Dashboard({
                             type: "spring",
                           }}
                           className="text-2xl sm:text-3xl"
+                          style={{ willChange: 'transform, opacity' }}
                         >
                           {currentBalance.toLocaleString()}
                         </motion.p>
@@ -497,6 +511,7 @@ export default function Dashboard({
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.2 }}
+                style={{ willChange: 'transform, opacity' }}
               >
                 <Card className="w-full p-6 md:p-8 bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-lg rounded-2xl hover:shadow-xl transition-all theme-transition space-y-2 h-48">
                   <div className="flex items-center gap-4 mb-4">
@@ -513,6 +528,7 @@ export default function Dashboard({
                         ease: "easeInOut",
                       }}
                       className="w-12 h-12 md:w-14 md:h-14 rounded-xl bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center theme-transition"
+                      style={{ willChange: 'transform, opacity' }}
                     >
                       <Coins className="w-5 h-5 md:w-6 md:h-6 text-purple-600 dark:text-purple-400 theme-transition" />
                     </motion.div>
@@ -536,6 +552,7 @@ export default function Dashboard({
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.3 }}
+                style={{ willChange: 'transform, opacity' }}
               >
                 <Card className="w-full p-6 md:p-8 bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-lg rounded-2xl hover:shadow-xl transition-all theme-transition space-y-2 h-48">
                   <div className="flex items-center gap-4 mb-4">
@@ -549,6 +566,7 @@ export default function Dashboard({
                         ease: "easeInOut",
                       }}
                       className="w-12 h-12 md:w-14 md:h-14 rounded-xl bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center theme-transition"
+                      style={{ willChange: 'transform, opacity' }}
                     >
                       <Trophy className="w-5 h-5 md:w-6 md:h-6 text-orange-600 dark:text-orange-400 theme-transition" />
                     </motion.div>
@@ -572,6 +590,7 @@ export default function Dashboard({
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.4 }}
+                style={{ willChange: 'transform, opacity' }}
               >
                 <Card className="w-full p-6 md:p-8 bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-lg rounded-2xl hover:shadow-xl transition-all theme-transition space-y-2 h-48">
                   <div className="flex items-center gap-4 mb-4">
@@ -588,6 +607,7 @@ export default function Dashboard({
                         ease: "easeInOut",
                       }}
                       className="w-12 h-12 md:w-14 md:h-14 rounded-xl bg-green-100 dark:bg-green-900/30 flex items-center justify-center theme-transition"
+                      style={{ willChange: 'transform, opacity' }}
                     >
                       <Target className="w-5 h-5 md:w-6 md:h-6 text-green-600 dark:text-green-400 theme-transition" />
                     </motion.div>
@@ -611,6 +631,7 @@ export default function Dashboard({
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.4 }}
+              style={{ willChange: 'transform, opacity' }}
             >
               <Card className="p-4 sm:p-6 md:p-8 bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-lg rounded-2xl theme-transition">
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
@@ -676,10 +697,12 @@ export default function Dashboard({
                           duration: 0.3,
                           delay: index * 0.05,
                         }}
+                        style={{ willChange: 'transform, opacity' }}
                       >
                         <div className="flex items-center gap-6 sm:gap-8 p-6 sm:p-8 bg-gray-50 dark:bg-gray-900/50 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-900 transition-all theme-transition">
                           <div
-                            className={`w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-br ${colors.bg} flex items-center justify-center text-white flex-shrink-0`}
+                            className={`w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-br ${colors?.bg || 'from-blue-400 to-blue-500'} flex items-center justify-center text-white flex-shrink-0`}
+                            /* tailwind safelist: bg-gradient-to-br from-blue-400 to-blue-500 from-purple-400 to-purple-500 from-green-400 to-green-500 from-yellow-400 to-orange-500 from-pink-400 to-pink-500 from-indigo-400 to-indigo-500 */
                           >
                             <Icon className="w-5 h-5 sm:w-6 sm:h-6" />
                           </div>

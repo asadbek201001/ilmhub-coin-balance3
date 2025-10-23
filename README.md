@@ -1,6 +1,6 @@
 # 📚 Ilim Hup Coins  
 
-**Ilim Hup Coins** — bu ta’lim platformasi bo‘lib, unda o‘qituvchi, o‘quvchi va admin uchun alohida panellar mavjud.  
+**Ilim Hub Coins** — bu ta’lim platformasi bo‘lib, unda o‘qituvchi, o‘quvchi va admin uchun alohida panellar mavjud.  
 Platformaning asosiy g‘oyasi — o‘quvchining darslardagi faolligini kuzatish va unga **coins** (virtual tangalar) berish.  
 Ushbu coins’lar yordamida o‘quvchi o‘zining **shaxsiy magazini**da turli narsalarni xarid qilishi mumkin.  
 

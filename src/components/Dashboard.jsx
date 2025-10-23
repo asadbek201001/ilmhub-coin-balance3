@@ -1,5 +1,3 @@
-// NOTE: This Dashboard component includes its own sidebar/navigation and does NOT require the global Navbar.
-// When navigating to the Dashboard route, the global Navbar should not be displayed.
 // Libraries
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "motion/react";
@@ -23,7 +21,7 @@ import {
   X,
 } from "lucide-react";
 
-// Components (No Navbar import here; Dashboard is self-contained)
+// Components
 import { Button } from "./ui/button";
 import { Card } from "./ui/card";
 import {
@@ -98,16 +96,12 @@ const getActivityColor = (type) => {
   }
 };
 
-export default function Dashboard({
-  user,
-  onLogout,
-  onNavigate = () => {},
-}) {
+export default function Dashboard({ user, onLogout, onNavigate = () => {} }) {
   const { t } = useLanguage();
   const [filterType, setFilterType] = useState("all");
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [windowWidth, setWindowWidth] = useState(
-    typeof window !== "undefined" ? window.innerWidth : 1024,
+    typeof window !== "undefined" ? window.innerWidth : 1024
   );
   const [activeSection, setActiveSection] = useState("dashboard");
   // Dropdown for account
@@ -150,7 +144,7 @@ export default function Dashboard({
     {
       id: 1,
       type: "quiz",
-      titleKey: "activity.completedMathQuiz",
+      titleKey: "Ilg'or matematika testini tugatdi",
       coins: 150,
       date: "2025-10-12",
       categoryKey: "category.math",
@@ -158,7 +152,7 @@ export default function Dashboard({
     {
       id: 2,
       type: "homework",
-      titleKey: "activity.submittedPhysics",
+      titleKey: "Fizika topshirig'ini topshirdi",
       coins: 75,
       date: "2025-10-11",
       categoryKey: "category.science",
@@ -166,7 +160,7 @@ export default function Dashboard({
     {
       id: 3,
       type: "achievement",
-      titleKey: "activity.learningStreak",
+      titleKey: "7 kunlik oʻrganish ketma-ketligi",
       coins: 200,
       date: "2025-10-11",
       categoryKey: "category.milestone",
@@ -174,7 +168,7 @@ export default function Dashboard({
     {
       id: 4,
       type: "participation",
-      titleKey: "activity.activeDiscussion",
+      titleKey: "Faol muhokama ishtiroki",
       coins: 50,
       date: "2025-10-10",
       categoryKey: "category.community",
@@ -182,7 +176,7 @@ export default function Dashboard({
     {
       id: 5,
       type: "quiz",
-      titleKey: "activity.acedEnglish",
+      titleKey: "Ingliz adabiyoti testidan ajoyib oʻtdi",
       coins: 120,
       date: "2025-10-09",
       categoryKey: "category.english",
@@ -190,7 +184,7 @@ export default function Dashboard({
     {
       id: 6,
       type: "bonus",
-      titleKey: "activity.earlySubmission",
+      titleKey: "Erta topshirish bonusi",
       coins: 30,
       date: "2025-10-09",
       categoryKey: "category.bonus",
@@ -198,7 +192,7 @@ export default function Dashboard({
     {
       id: 7,
       type: "homework",
-      titleKey: "activity.chemistryLab",
+      titleKey: "Kimyo laboratoriya hisoboti",
       coins: 100,
       date: "2025-10-08",
       categoryKey: "category.science",
@@ -206,7 +200,7 @@ export default function Dashboard({
     {
       id: 8,
       type: "referral",
-      titleKey: "activity.referredFriend",
+      titleKey: "Doʻstni tavsiya qildi",
       coins: 250,
       date: "2025-10-07",
       categoryKey: "category.referral",
@@ -214,7 +208,7 @@ export default function Dashboard({
     {
       id: 9,
       type: "achievement",
-      titleKey: "activity.completedCourse",
+      titleKey: "Kursni tugatdi: Veb dasturlash",
       coins: 500,
       date: "2025-10-06",
       categoryKey: "category.achievement",
@@ -222,7 +216,7 @@ export default function Dashboard({
     {
       id: 10,
       type: "quiz",
-      titleKey: "activity.historyQuiz",
+      titleKey: "Tarix testi mukammal ball",
       coins: 100,
       date: "2025-10-05",
       categoryKey: "category.history",
@@ -230,22 +224,14 @@ export default function Dashboard({
   ];
 
   // New stat variables for 4 cards
-  const currentBalance = 2500; // example value
-  const allTimeBalance = 4800; // example value
-  const centerRank = 5; // example value
-  const globalRank = 23; // example value
-
-  const totalCoins = mockActivities.reduce(
-    (sum, activity) => sum + activity.coins,
-    0,
-  );
+  const currentBalance = 2500;
+  const allTimeBalance = 4800;
+  const centerRank = 5;
 
   const filteredActivities =
     filterType === "all"
       ? mockActivities
-      : mockActivities.filter(
-          (activity) => activity.type === filterType,
-        );
+      : mockActivities.filter((activity) => activity.type === filterType);
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -271,134 +257,106 @@ export default function Dashboard({
                 className="fixed inset-0 bg-black/50 z-40 md:hidden"
               />
             )}
-            <motion.aside
-              initial={{ x: -300 }}
-              animate={{ x: 0 }}
-              exit={{ x: -300 }}
+            {/* Navbar */}
+            <motion.nav
+              initial={{ y: -80, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
               transition={{ type: "spring", damping: 20 }}
-              className="fixed md:sticky top-0 left-0 h-screen w-64 bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-700 p-6 z-50 overflow-y-auto theme-transition"
+              className="fixed top-0 left-0 right-0 z-50 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 px-8 py-3 flex items-center justify-between theme-transition"
             >
-              <div className="flex items-center justify-between mb-8">
-                <div className="flex items-center gap-2">
-                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-400 to-green-400 flex items-center justify-center">
-                    <Coins className="w-6 h-6 text-white" />
-                  </div>
-                  <span className="text-xl text-gray-800 dark:text-white theme-transition">
-                    IlmCoin
-                  </span>
+              <div className="flex items-center gap-2">
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-400 to-green-400 flex items-center justify-center">
+                  <Coins className="w-6 h-6 text-white" />
                 </div>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => setSidebarOpen(false)}
-                  className="md:hidden rounded-lg"
-                >
-                  <X className="w-5 h-5" />
-                </Button>
+                <span className="text-xl text-gray-800 dark:text-white theme-transition">
+                  Wallet
+                </span>
               </div>
 
-              {/*
-                Account section with dropdown:
-                - The > icon is removed.
-                - The dropdown appears when clicking the account div.
-              */}
-              {/* Account section with dropdown */}
-              <div className="relative mb-8">
-                <div
-                  ref={accountRef}
-                  className="flex items-center gap-3 p-3 bg-gray-50 dark:bg-gray-800 rounded-xl theme-transition cursor-pointer transition-all hover:bg-blue-100/60 dark:hover:bg-blue-900/30"
-                  style={{ marginBottom: "0.25rem" }}
-                  onClick={() => setShowDropdown((prev) => !prev)}
-                  tabIndex={0}
-                  onKeyDown={e => { if (e.key === "Enter" || e.key === " ") setShowDropdown(v => !v); }}
-                  aria-haspopup="true"
-                  aria-expanded={showDropdown}
-                >
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-400 to-green-400 flex items-center justify-center text-white">
-                    <User className="w-6 h-6" />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm text-gray-800 dark:text-white truncate theme-transition">
-                      {randomName}
-                    </p>
-                    <p className="text-xs text-gray-500 dark:text-gray-400 truncate theme-transition">
-                      {randomEmail}
-                    </p>
-                  </div>
-                  <button
-                    tabIndex={-1}
-                    className="ml-4 px-2 py-1 rounded-lg bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all"
-                    style={{ marginLeft: "1rem" }}
-                    aria-label={showDropdown ? "Close account menu" : "Open account menu"}
-                  >
-                    <svg
-                      className={`w-4 h-4 transform transition-transform duration-200 ${showDropdown ? "rotate-180" : "rotate-0"}`}
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth={2}
-                      viewBox="0 0 24 24"
-                    >
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-                    </svg>
-                  </button>
-                </div>
-                <AnimatePresence>
-                  {showDropdown && (
-                    <motion.div
-                      ref={dropdownRef}
-                      initial={{ opacity: 0, scale: 0.96, y: -10 }}
-                      animate={{ opacity: 1, scale: 1, y: 0 }}
-                      exit={{ opacity: 0, scale: 0.96, y: -10 }}
-                      transition={{ duration: 0.18, ease: "easeInOut" }}
-                      className="absolute left-0 top-full w-full bg-white dark:bg-gray-800 rounded-xl shadow-xl border border-gray-200 dark:border-gray-700 z-50 overflow-hidden p-2 space-y-2"
-                      style={{ marginTop: "0.75rem" }}
-                    >
-                      <button
-                        onClick={onLogout}
-                        type="button"
-                        className="w-full flex items-center gap-3 rounded-xl px-3 py-2 hover:bg-red-500 dark:hover:bg-red-600 hover:text-white dark:hover:text-white transition-all duration-200 cursor-pointer"
-                      >
-                        <LogOut className="w-5 h-5" />
-                        <span>{t("nav.logout")}</span>
-                      </button>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-              {/* Add spacing between account and nav */}
-              <div style={{ height: "2.5rem" }}></div>
-
-              <nav className="space-y-2 mb-8">
+              <div className="hidden md:flex items-center gap-4">
                 <button
-                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all theme-transition ${
+                  onClick={() => setActiveSection("dashboard")}
+                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
                     activeSection === "dashboard"
-                      ? "bg-gradient-to-r from-blue-50 to-green-50 dark:from-blue-900/20 dark:to-green-900/20 text-blue-600 dark:text-blue-400"
+                      ? "bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400"
                       : "text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800"
                   }`}
-                  onClick={() => setActiveSection("dashboard")}
                 >
-                  <Coins className="w-5 h-5" />
-                  <span>{t("dashboard.dashboard")}</span>
+                  Panel
                 </button>
                 <button
                   onClick={() => setActiveSection("leaderboard")}
-                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all theme-transition ${
+                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
                     activeSection === "leaderboard"
-                      ? "bg-gradient-to-r from-blue-50 to-green-50 dark:from-blue-900/20 dark:to-green-900/20 text-blue-600 dark:text-blue-400"
+                      ? "bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400"
                       : "text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800"
                   }`}
                 >
-                  <Trophy className="w-5 h-5" />
-                  <span>{t("leaderboard.title")}</span>
+                  Reyting jadvali
                 </button>
-              </nav>
-
-              <div className="flex items-center gap-3 mb-6">
-                <ThemeToggle className="rounded-xl p-2 transition-all theme-transition" />
-                <LanguageToggle className="rounded-xl p-2 transition-all theme-transition" />
               </div>
 
-            </motion.aside>
+              <div className="flex items-center gap-3 relative">
+                <ThemeToggle />
+                <LanguageToggle />
+
+                {/* Account (User icon + dropdown) */}
+                <div className="relative">
+                  <div
+                    ref={accountRef}
+                    className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-green-400 flex items-center justify-center text-white"
+                    onClick={() => setShowDropdown((prev) => !prev)}
+                  >
+                    <User className="w-5 h-5 text-white" />
+                  </div>
+
+                  <AnimatePresence>
+                    {showDropdown && (
+                      <motion.div
+                        ref={dropdownRef}
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -10 }}
+                        transition={{ duration: 0.2 }}
+                        className="absolute right-0 top-full mt-2 w-48 bg-white dark:bg-gray-800 rounded-xl shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden z-50"
+                      >
+                        <div className="p-4 border-b border-gray-200 dark:border-gray-700">
+                          <p className="text-sm font-medium text-gray-800 dark:text-white">
+                            {randomName}
+                          </p>
+                        </div>
+
+                        <button
+                          onClick={onLogout}
+                          type="button"
+                          style={{
+                            display: "block",
+                            width: "100%",
+                            textAlign: "left",
+                            padding: "8px 16px",
+                            color: "#374151",
+                            backgroundColor: "transparent",
+                            border: "none",
+                            cursor: "pointer",
+                            transition: "all 0.2s ease",
+                          }}
+                          onMouseEnter={(e) => {
+                            e.target.style.backgroundColor = "#ef4444";
+                            e.target.style.color = "white"; 
+                          }}
+                          onMouseLeave={(e) => {
+                            e.target.style.backgroundColor = "transparent";
+                            e.target.style.color = "#374151";
+                          }}
+                        >
+                          Chiqish
+                        </button>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              </div>
+            </motion.nav>
           </>
         )}
       </AnimatePresence>
@@ -419,34 +377,24 @@ export default function Dashboard({
               <Coins className="w-5 h-5 text-white" />
             </div>
             <span className="text-lg text-gray-800 dark:text-white theme-transition">
-              IlmCoin
+              Wallet
             </span>
           </div>
         </div>
 
         {activeSection === "dashboard" && (
           <div className="max-w-6xl mx-auto space-y-6 md:space-y-8">
-            <motion.div
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
+            <div
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8"
+              style={{ marginTop: "50px" }}
             >
-              <h1 className="text-2xl sm:text-3xl md:text-4xl text-gray-800 dark:text-white mb-2 theme-transition">
-                {t("dashboard.welcome")} {randomName}! 👋
-              </h1>
-              <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300 theme-transition">
-                {t("dashboard.subtitle")}
-              </p>
-            </motion.div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
               {/* Card 1: Current Balance */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.1 }}
               >
-                <Card className="w-full p-6 md:p-8 bg-gradient-to-br from-blue-400 to-green-400 border-0 shadow-xl rounded-2xl text-white relative overflow-hidden h-48">
+                <Card className="w-full p-6 md:p-8 bg-gradient-to-br from-blue-400 to-green-400 border-0 shadow-xl rounded-2xl text-white relative overflow-hidden h-38">
                   <div className="absolute top-0 right-0 w-24 h-24 md:w-32 md:h-32 bg-white/10 rounded-full -mr-12 -mt-12 md:-mr-16 md:-mt-16"></div>
                   <div className="absolute bottom-0 left-0 w-40 h-40 md:w-48 md:h-48 bg-white/10 rounded-full -ml-20 -mb-20 md:-ml-24 md:-mb-24"></div>
                   <div className="relative z-10">
@@ -464,7 +412,7 @@ export default function Dashboard({
                       </motion.div>
                       <div>
                         <p className="text-white/80 text-xs sm:text-sm">
-                          {t("dashboard.currentBalanceLabel")}
+                          Joriy balans
                         </p>
                         <motion.p
                           initial={{ opacity: 0, scale: 0.5 }}
@@ -479,10 +427,6 @@ export default function Dashboard({
                         </motion.p>
                       </div>
                     </div>
-                    <div className="flex items-center gap-1 text-xs sm:text-sm">
-                      <TrendingUp className="w-3 h-3 sm:w-4 sm:h-4" />
-                      <span>{t("dashboard.currentBalanceSub")}</span>
-                    </div>
                   </div>
                 </Card>
               </motion.div>
@@ -493,23 +437,20 @@ export default function Dashboard({
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.2 }}
               >
-                <Card className="w-full p-6 md:p-8 bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-lg rounded-2xl hover:shadow-xl transition-all theme-transition space-y-2 h-48">
+                <Card className="w-full p-6 md:p-8 bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-lg rounded-2xl hover:shadow-xl transition-all theme-transition space-y-2 h-38">
                   <div className="flex items-center gap-4 mb-4">
                     <div className="w-12 h-12 md:w-14 md:h-14 rounded-xl bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center theme-transition">
                       <Coins className="w-5 h-5 md:w-6 md:h-6 text-purple-600 dark:text-purple-400 theme-transition" />
                     </div>
                     <div className="pl-1">
                       <p className="text-gray-500 dark:text-gray-400 text-xs sm:text-sm theme-transition">
-                        {t("dashboard.allTimeBalanceLabel")}
+                        Umumiy balans
                       </p>
                       <p className="text-2xl sm:text-3xl text-gray-800 dark:text-white theme-transition">
                         {allTimeBalance.toLocaleString()}
                       </p>
                     </div>
                   </div>
-                  <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 theme-transition">
-                    {t("dashboard.allTimeBalanceSub")}
-                  </p>
                 </Card>
               </motion.div>
 
@@ -519,49 +460,20 @@ export default function Dashboard({
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.3 }}
               >
-                <Card className="w-full p-6 md:p-8 bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-lg rounded-2xl hover:shadow-xl transition-all theme-transition space-y-2 h-48">
+                <Card className="w-full p-6 md:p-8 bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-lg rounded-2xl hover:shadow-xl transition-all theme-transition space-y-2 h-38">
                   <div className="flex items-center gap-4 mb-4">
                     <div className="w-12 h-12 md:w-14 md:h-14 rounded-xl bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center theme-transition">
                       <Trophy className="w-5 h-5 md:w-6 md:h-6 text-orange-600 dark:text-orange-400 theme-transition" />
                     </div>
                     <div className="pl-1">
                       <p className="text-gray-500 dark:text-gray-400 text-xs sm:text-sm theme-transition">
-                        {t("dashboard.centerRankLabel")}
+                        O'rin
                       </p>
                       <p className="text-2xl sm:text-3xl text-gray-800 dark:text-white theme-transition">
                         #{centerRank}
                       </p>
                     </div>
                   </div>
-                  <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 theme-transition">
-                    {t("dashboard.centerRankSub")}
-                  </p>
-                </Card>
-              </motion.div>
-
-              {/* Card 4: Global Rank */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.4 }}
-              >
-                <Card className="w-full p-6 md:p-8 bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-lg rounded-2xl hover:shadow-xl transition-all theme-transition space-y-2 h-48">
-                  <div className="flex items-center gap-4 mb-4">
-                    <div className="w-12 h-12 md:w-14 md:h-14 rounded-xl bg-green-100 dark:bg-green-900/30 flex items-center justify-center theme-transition">
-                      <Target className="w-5 h-5 md:w-6 md:h-6 text-green-600 dark:text-green-400 theme-transition" />
-                    </div>
-                    <div className="pl-1">
-                      <p className="text-gray-500 dark:text-gray-400 text-xs sm:text-sm theme-transition">
-                        {t("dashboard.globalRankLabel")}
-                      </p>
-                      <p className="text-2xl sm:text-3xl text-gray-800 dark:text-white theme-transition">
-                        #{globalRank}
-                      </p>
-                    </div>
-                  </div>
-                  <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 theme-transition">
-                    {t("dashboard.globalRankSub")}
-                  </p>
                 </Card>
               </motion.div>
             </div>
@@ -575,45 +487,27 @@ export default function Dashboard({
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
                   <div>
                     <h2 className="text-xl sm:text-2xl text-gray-800 dark:text-white mb-1 theme-transition">
-                      {t("dashboard.rewardHistory")}
+                      O'tkazmalar tarixi
                     </h2>
                     <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300 theme-transition">
-                      {t("dashboard.trackAll")}
+                      Barcha ishlagan tangalaringizni va yutuqlaringizni kuzatib
+                      boring
                     </p>
                   </div>
                   <div className="flex items-center gap-3">
                     <Filter className="w-5 h-5 text-gray-400 dark:text-gray-500" />
-                    <Select
-                      value={filterType}
-                      onValueChange={setFilterType}
-                    >
+                    <Select value={filterType} onValueChange={setFilterType}>
                       <SelectTrigger className="w-full sm:w-40 rounded-xl border-gray-200 dark:border-gray-700 dark:bg-gray-900 theme-transition">
-                        <SelectValue
-                          placeholder={t("dashboard.filterType")}
-                        />
+                        <SelectValue placeholder={t("dashboard.filterType")} />
                       </SelectTrigger>
                       <SelectContent className="dark:bg-gray-900 dark:border-gray-700">
-                        <SelectItem value="all">
-                          {t("dashboard.allActivities")}
-                        </SelectItem>
-                        <SelectItem value="homework">
-                          {t("dashboard.homework")}
-                        </SelectItem>
-                        <SelectItem value="quiz">
-                          {t("dashboard.quizzes")}
-                        </SelectItem>
-                        <SelectItem value="achievement">
-                          {t("dashboard.achievements")}
-                        </SelectItem>
-                        <SelectItem value="participation">
-                          {t("dashboard.participation")}
-                        </SelectItem>
-                        <SelectItem value="bonus">
-                          {t("dashboard.bonus")}
-                        </SelectItem>
-                        <SelectItem value="referral">
-                          {t("dashboard.referrals")}
-                        </SelectItem>
+                        <SelectItem value="all">Barchasi</SelectItem>
+                        <SelectItem value="homework">Uy vazifalari</SelectItem>
+                        <SelectItem value="quiz">Testlar</SelectItem>
+                        <SelectItem value="achievement">Yutuqlar</SelectItem>
+                        <SelectItem value="participation">Ishtirok</SelectItem>
+                        <SelectItem value="bonus">Bonus</SelectItem>
+                        <SelectItem value="referral">Tavsiyalar</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -622,9 +516,7 @@ export default function Dashboard({
                 <div className="space-y-3">
                   {filteredActivities.map((activity, index) => {
                     const Icon = getActivityIcon(activity.type);
-                    const colors = getActivityColor(
-                      activity.type,
-                    );
+                    const colors = getActivityColor(activity.type);
 
                     return (
                       <motion.div
@@ -681,9 +573,7 @@ export default function Dashboard({
             </motion.div>
           </div>
         )}
-        {activeSection === "leaderboard" && (
-          <Leaderboard />
-        )}
+        {activeSection === "leaderboard" && <Leaderboard />}
       </div>
     </div>
   );
@@ -691,12 +581,48 @@ export default function Dashboard({
 // Helper for random first and last name
 function getRandomFirstLastName() {
   const firstNames = [
-    "Ali", "Aisha", "Fatima", "Omar", "Sara", "Yusuf", "Layla", "Zain", "Maryam", "Hassan",
-    "Imran", "Noor", "Nadia", "Bilal", "Samira", "Khalid", "Mina", "Ibrahim", "Dina", "Farah"
+    "Ali",
+    "Aisha",
+    "Fatima",
+    "Omar",
+    "Sara",
+    "Yusuf",
+    "Layla",
+    "Zain",
+    "Maryam",
+    "Hassan",
+    "Imran",
+    "Noor",
+    "Nadia",
+    "Bilal",
+    "Samira",
+    "Khalid",
+    "Mina",
+    "Ibrahim",
+    "Dina",
+    "Farah",
   ];
   const lastNames = [
-    "Ahmed", "Khan", "Patel", "Rahman", "Hussain", "Aliyev", "Malik", "Qureshi", "Nasir", "Aziz",
-    "Mahmood", "Siddiqui", "Farooq", "Mirza", "Hashmi", "Syed", "Chaudhry", "Sultan", "Rashid", "Ansari"
+    "Ahmed",
+    "Khan",
+    "Patel",
+    "Rahman",
+    "Hussain",
+    "Aliyev",
+    "Malik",
+    "Qureshi",
+    "Nasir",
+    "Aziz",
+    "Mahmood",
+    "Siddiqui",
+    "Farooq",
+    "Mirza",
+    "Hashmi",
+    "Syed",
+    "Chaudhry",
+    "Sultan",
+    "Rashid",
+    "Ansari",
   ];
   // Use a random index for both, seeded from Math.random
   const f = firstNames[Math.floor(Math.random() * firstNames.length)];

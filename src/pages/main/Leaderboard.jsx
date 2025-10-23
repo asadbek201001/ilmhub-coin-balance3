@@ -4,12 +4,7 @@ import { motion } from "framer-motion";
 import {
   Trophy,
   Medal,
-  ChevronDown,
-  ChevronUp,
-  Calendar,
   TrendingUp,
-  ArrowUpRight,
-  ArrowDownRight,
   User,
   GraduationCap,
   UserCog,
@@ -17,11 +12,8 @@ import {
 import { useNavigate } from "react-router";
 
 // Components
-import { Button } from "../../components/ui/button";
 import { Card } from "../../components/ui/card";
 import { Badge } from "../../components/ui/badge";
-import { ThemeToggle } from "../../components/ThemeToggle";
-import { LanguageToggle } from "../../components/LanguageToggle";
 
 // Context
 import { useLanguage } from "../../contexts/LanguageContext";
@@ -398,15 +390,6 @@ export default function Leaderboard() {
                   <p className="text-sm text-gray-600 dark:text-gray-400 theme-transition">
                     {t("leaderboard.allTimeBalance")}
                   </p>
-                  <span className="ml-auto">
-                    <select className="px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-800 dark:text-white shadow-sm focus:outline-none">
-                      <option>1 Oylik</option>
-                      <option>2 Oylik</option>
-                      <option>3 Oylik</option>
-                      <option>4 Oylik</option>
-                      <option>5 Oylik</option>
-                    </select>
-                  </span>
                 </div>
               </div>
 

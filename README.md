@@ -1,4 +1,4 @@
-# 📚 Ilim Hup Coins  
+# 📚 Ilim Hub Coins  
 
 **Ilim Hub Coins** — bu ta’lim platformasi bo‘lib, unda o‘qituvchi, o‘quvchi va admin uchun alohida panellar mavjud.  
 Platformaning asosiy g‘oyasi — o‘quvchining darslardagi faolligini kuzatish va unga **coins** (virtual tangalar) berish.  
@@ -36,4 +36,4 @@ Bu ularni darslarda faol bo‘lishga undaydi.
 1. Loyihani clone qilish:  
    bash
    git clone https://github.com/a-anvarbek/IlmHub-coins.git
-   cd ilim-hup-coins
+   cd ilim-hub-coins

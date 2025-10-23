@@ -1,14 +1,6 @@
 // Libraries
-import { useState } from "react";
 import { motion } from "framer-motion";
-import {
-  Trophy,
-  Medal,
-  TrendingUp,
-  User,
-  GraduationCap,
-  UserCog,
-} from "lucide-react";
+import { Trophy, Medal, TrendingUp } from "lucide-react";
 import { useNavigate } from "react-router";
 
 // Components
@@ -241,7 +233,6 @@ const adminsData = [
 export default function Leaderboard() {
   const { t } = useLanguage();
   const navigate = useNavigate();
-  const [currentPages, setCurrentPages] = useState({});
 
   let allData = [
     ...studentsData.map((item) => ({ ...item, role: "student" })),
@@ -300,43 +291,6 @@ export default function Leaderboard() {
     }
   };
 
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString("en-US", {
-      month: "short",
-      day: "numeric",
-      year: "numeric",
-    });
-  };
-
-  const ITEMS_PER_PAGE = 10;
-
-  const getPaginatedTransactions = (transactions, userId) => {
-    const currentPage = currentPages[userId] || 1;
-    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-    const endIndex = startIndex + ITEMS_PER_PAGE;
-    return {
-      items: transactions.slice(startIndex, endIndex),
-      totalPages: Math.ceil(transactions.length / ITEMS_PER_PAGE),
-      currentPage,
-    };
-  };
-
-  const setPage = (userId, page) => {
-    setCurrentPages({ ...currentPages, [userId]: page });
-  };
-
-  const getRoleIcon = (role) => {
-    switch (role) {
-      case "student":
-        return <User className="w-4 h-4" />;
-      case "teacher":
-        return <GraduationCap className="w-4 h-4" />;
-      case "admin":
-        return <UserCog className="w-4 h-4" />;
-    }
-  };
-
   return (
     <div className="min-h-screen pt-32 px-6">
       {/* Header */}
@@ -351,12 +305,12 @@ export default function Leaderboard() {
           <div className="flex items-center justify-center gap-1.5 sm:gap-2 md:gap-3 mb-2 sm:mb-3 md:mb-4">
             <Trophy className="w-6 h-6 sm:w-8 sm:h-8 md:w-12 md:h-12 text-yellow-500" />
             <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-gray-800 dark:text-white theme-transition">
-              {t("leaderboard.title")}
+              Reyting jadvali
             </h1>
             <Trophy className="w-6 h-6 sm:w-8 sm:h-8 md:w-12 md:h-12 text-yellow-500" />
           </div>
           <p className="text-xs sm:text-sm md:text-base lg:text-lg text-gray-600 dark:text-gray-300 theme-transition px-2 sm:px-4">
-            {t("leaderboard.subtitle")}
+            Eng yaxshi ishtirokchilar va ularning yutuqlari
           </p>
         </motion.div>
 
@@ -373,22 +327,22 @@ export default function Leaderboard() {
               <div className="grid grid-cols-12 gap-4 p-6 bg-gray-50 dark:bg-gray-900/50 border-b border-gray-200 dark:border-gray-700 theme-transition items-center">
                 <div className="col-span-1 text-center">
                   <p className="text-sm text-gray-600 dark:text-gray-400 theme-transition">
-                    {t("leaderboard.rank")}
+                    O'rin
                   </p>
                 </div>
                 <div className="col-span-5">
                   <p className="text-sm text-gray-600 dark:text-gray-400 theme-transition">
-                    {t("leaderboard.name")}
+                    Ism
                   </p>
                 </div>
                 <div className="col-span-3">
                   <p className="text-sm text-gray-600 dark:text-gray-400 theme-transition">
-                    {t("leaderboard.currentBalance")}
+                    Joriy balans
                   </p>
                 </div>
                 <div className="col-span-3 flex items-center justify-between">
                   <p className="text-sm text-gray-600 dark:text-gray-400 theme-transition">
-                    {t("leaderboard.allTimeBalance")}
+                    Umumiy balans
                   </p>
                 </div>
               </div>
@@ -427,10 +381,10 @@ export default function Leaderboard() {
                               >
                                 <Medal className="w-3 h-3 mr-1" />
                                 {rank === 1
-                                  ? t("leaderboard.topPerformer")
+                                  ? "Eng yaxshi"
                                   : rank === 2
-                                  ? t("leaderboard.excellent")
-                                  : t("leaderboard.great")}
+                                  ? "A'lo"
+                                  : "Yahshi"}
                               </Badge>
                             )}
                           </div>
@@ -441,7 +395,7 @@ export default function Leaderboard() {
                             <TrendingUp className="w-5 h-5 text-blue-600 dark:text-blue-400" />
                             <div>
                               <p className="text-xs text-blue-600 dark:text-blue-400 theme-transition">
-                                {t("leaderboard.current")}
+                                Joriy
                               </p>
                               <p className="text-gray-800 dark:text-white theme-transition">
                                 {user.currentBalance.toLocaleString()}
@@ -455,7 +409,7 @@ export default function Leaderboard() {
                             <Trophy className="w-5 h-5 text-green-600 dark:text-green-400" />
                             <div>
                               <p className="text-xs text-green-600 dark:text-green-400 theme-transition">
-                                {t("leaderboard.allTime")}
+                                Umumiy
                               </p>
                               <p className="text-gray-800 dark:text-white theme-transition">
                                 {user.allTimeBalance.toLocaleString()}

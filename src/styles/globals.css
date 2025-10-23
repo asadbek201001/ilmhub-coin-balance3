@@ -254,3 +254,75 @@ html,
 body {
   overflow-x: hidden;
 }
+
+/* === Dashboard Card Responsive Tweaks === */
+@media (max-width: 640px) {
+  .dashboard-card {
+    padding: 0.75rem !important;
+    height: 7.5rem !important;
+  }
+  .dashboard-card .card-icon {
+    width: 2rem !important;
+    height: 2rem !important;
+  }
+  .dashboard-card .card-text p {
+    font-size: 0.75rem !important;
+  }
+  .dashboard-card .card-text .card-value {
+    font-size: 1.25rem !important;
+  }
+}
+
+@layer utilities {
+  @variants responsive {
+    @media (max-width: 640px) {
+      .mobile\:w-\[130px\] { width: 130px !important; }
+      .mobile\:h-\[140px\] { height: 140px !important; }
+      .mobile\:p-3 { padding: 0.75rem !important; }
+      .mobile\:w-7 { width: 1.75rem !important; }
+      .mobile\:h-7 { height: 1.75rem !important; }
+      .mobile\:w-4 { width: 1rem !important; }
+      .mobile\:h-4 { height: 1rem !important; }
+      .mobile\:text-xs { font-size: 0.75rem !important; }
+      .mobile\:text-base { font-size: 1rem !important; }
+    }
+  }
+}
+
+/* === Dashboard cards mobile optimization === */
+@media (max-width: 640px) {
+  .dashboard-card {
+    width: 120px !important;
+    height: 130px !important;
+    padding: 0.75rem !important;
+  }
+
+  .dashboard-card p {
+    font-size: 0.75rem !important;
+  }
+
+  .dashboard-card .text-2xl {
+    font-size: 1rem !important;
+  }
+
+  .dashboard-card .w-10,
+  .dashboard-card .h-10 {
+    width: 1.75rem !important;
+    height: 1.75rem !important;
+  }
+
+  .dashboard-card svg {
+    width: 0.9rem !important;
+    height: 0.9rem !important;
+  }
+
+  /* Yonma-yon joylashishni saqlash */
+  .dashboard-card {
+    flex: 1 1 auto;
+  }
+
+  /* Flex konteynerda joylashuv */
+  .dashboard-card-container {
+    justify-content: space-around !important;
+  }
+}

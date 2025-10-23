@@ -1,169 +1,237 @@
 // Libraries
-import { useState } from "react";
-import { motion } from "motion/react";
-import { Coins, Menu, X } from "lucide-react";
-import { useNavigate } from "react-router";
-import { useLocation } from "react-router-dom";
+import { useState, useRef, useEffect } from "react";
+import { AnimatePresence, motion } from "motion/react";
+import { Coins, LogOut, User } from "lucide-react";
+import { useNavigate, useLocation } from "react-router";
 
 // Components
-import { Button } from "./ui/button";
 import { ThemeToggle } from "./ThemeToggle";
-import { LanguageToggle } from "./LanguageToggle";
 
-// Context
-import { useLanguage } from "../contexts/LanguageContext";
-
-export default function Header() {
-  const { t } = useLanguage();
+export default function Header({ onLogout }) {
   const navigate = useNavigate();
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
+  const [showDropdown, setShowDropdown] = useState(false);
+  const [windowWidth, setWindowWidth] = useState(
+    typeof window !== "undefined" ? window.innerWidth : 1024
+  );
+  const [activeSection, setActiveSection] = useState("dashboard");
 
-  if (location.pathname === '/') {
+  const accountRef = useRef(null);
+  const dropdownRef = useRef(null);
+
+  // Random name (demo)
+  const randomName = "Demo Student";
+
+  // 🔹 Faqat login sahifasida Header chiqmasin
+  if (location.pathname === "/login") {
     return null;
   }
 
+  // 🔹 Active section highlight qilish
+  useEffect(() => {
+    if (location.pathname === "/") {
+      setActiveSection("dashboard");
+    } else if (location.pathname === "/leaderboard") {
+      setActiveSection("leaderboard");
+    }
+  }, [location.pathname]);
+
+  // 🔹 Dropdown tashqarisiga bosilganda yopish
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target) &&
+        !accountRef.current.contains(event.target)
+      ) {
+        setShowDropdown(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
   return (
-    <motion.nav
-      initial={{ opacity: 0, y: -20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6 }}
-      className="fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-lg border-b border-gray-200/50 dark:border-gray-700/50 theme-transition overflow-visible"
-    >
-      <div className="max-w-7xl mx-auto px-6 py-4">
-        <div className="flex items-center justify-between">
-          {/* Logo */}
-          <div
-            className="flex items-center gap-2 cursor-pointer"
-            onClick={() => navigate("/")}
+    <AnimatePresence>
+      {windowWidth >= 0 && (
+        <>
+          {/* Navbar */}
+          <motion.nav
+            initial={{ y: -80, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ type: "spring", damping: 20 }}
+            className="fixed top-0 left-0 right-0 z-50 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 px-8 py-3 flex items-center justify-between theme-transition"
           >
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-400 to-green-400 flex items-center justify-center">
-              <Coins className="w-6 h-6 text-white" />
-            </div>
-            <span className="text-xl text-gray-800 dark:text-white theme-transition">
-              IlmCoin
-            </span>
-          </div>
-
-          {/* Desktop Nav */}
-          <div className="hidden md:flex items-center gap-8">
-            <button
-              onClick={() => navigate("/about")}
-              className="text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-white transition-colors"
+            {/* Logo */}
+            <div
+              className="flex items-center gap-2 cursor-pointer"
+              onClick={() => navigate("/")}
             >
-              {t("nav.about")}
-            </button>
-            <button
-              onClick={() => navigate("/features")}
-              className="text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-white transition-colors"
-            >
-              {t("nav.features")}
-            </button>
-            <button
-              onClick={() => navigate("/leaderboard")}
-              className="text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-white transition-colors"
-            >
-              {t("leaderboard.title")}
-            </button>
-            <button
-              onClick={() => navigate("/contact")}
-              className="text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-white transition-colors"
-            >
-              {t("nav.contact")}
-            </button>
-          </div>
-
-          {/* Controls */}
-          <div className="flex items-center gap-3">
-            {/* Theme & Language Toggles */}
-            <div className="hidden md:flex items-center gap-3">
-              <ThemeToggle />
-              <LanguageToggle />
-            </div>
-
-            {/* Login button (desktop only) */}
-            <Button
-              onClick={() => navigate("/login")}
-              className="hidden md:block bg-gradient-to-r from-blue-400 to-green-400 hover:from-blue-500 hover:to-green-500 text-white rounded-full px-6 shadow-md"
-            >
-              {t("nav.login")}
-            </Button>
-
-            {/* Mobile Menu Button */}
-            <button
-              className="md:hidden p-2 rounded-lg text-gray-700 dark:text-gray-200 hover:bg-gray-200/20 transition"
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-            >
-              {isMenuOpen ? (
-                <X className="w-6 h-6" />
-              ) : (
-                <Menu className="w-6 h-6" />
-              )}
-            </button>
-          </div>
-        </div>
-
-        {/* Mobile Menu */}
-        {isMenuOpen && (
-          <div className="md:hidden absolute top-[64px] left-0 right-0 p-4 bg-white dark:bg-gray-900 backdrop-blur-sm border-t border-gray-200 dark:border-gray-700 overflow-y-auto z-40">
-            <nav className="flex flex-col gap-3">
-              <button
-                onClick={() => {
-                  navigate("/about");
-                  setIsMenuOpen(false);
-                }}
-                className="text-left text-gray-700 dark:text-gray-300 hover:text-blue-500 transition-colors"
-              >
-                {t("nav.about")}
-              </button>
-              <button
-                onClick={() => {
-                  navigate("/features");
-                  setIsMenuOpen(false);
-                }}
-                className="text-left text-gray-700 dark:text-gray-300 hover:text-blue-500 transition-colors"
-              >
-                {t("nav.features")}
-              </button>
-              <button
-                onClick={() => {
-                  navigate("/leaderboard");
-                  setIsMenuOpen(false);
-                }}
-                className="text-left text-gray-700 dark:text-gray-300 hover:text-blue-500 transition-colors"
-              >
-                {t("leaderboard.title")}
-              </button>
-              <button
-                onClick={() => {
-                  navigate("/contact");
-                  setIsMenuOpen(false);
-                }}
-                className="text-left text-gray-700 dark:text-gray-300 hover:text-blue-500 transition-colors"
-              >
-                {t("nav.contact")}
-              </button>
-
-              <div className="border-t border-gray-300 dark:border-gray-700 mt-3 pt-3 flex flex-col gap-3">
-                <div className="w-full flex md:flex-col items-center justify-center gap-6 mt-3 self-start">
-                  <ThemeToggle />
-                  <LanguageToggle />
-                </div>
-
-                <Button
-                  onClick={() => {
-                    navigate("/login");
-                    setIsMenuOpen(false);
-                  }}
-                  className="bg-gradient-to-r from-blue-400 to-green-400 text-white rounded-full px-4 py-2 shadow-md"
-                >
-                  {t("nav.login")}
-                </Button>
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-400 to-green-400 flex items-center justify-center">
+                <Coins className="w-6 h-6 text-white" />
               </div>
-            </nav>
-          </div>
-        )}
-      </div>
-    </motion.nav>
+              <span className="text-xl text-gray-800 dark:text-white theme-transition">
+                Wallet
+              </span>
+            </div>
+
+            {/* Desktop nav links */}
+            <div className="hidden md:flex items-center gap-4">
+              <button
+                onClick={() => navigate("/")}
+                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+                  activeSection === "dashboard"
+                    ? "bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400"
+                    : "text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800"
+                }`}
+              >
+                Panel
+              </button>
+              <button
+                onClick={() => navigate("/leaderboard")}
+                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+                  activeSection === "leaderboard"
+                    ? "bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400"
+                    : "text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800"
+                }`}
+              >
+                Reyting jadvali
+              </button>
+            </div>
+
+            {/* Account Section */}
+            <div className="flex items-center gap-3 relative">
+              {/* Desktop versiyasi */}
+              <div className="hidden md:flex items-center gap-3 relative">
+                <ThemeToggle />
+                <div className="relative">
+                  <div
+                    ref={accountRef}
+                    className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-green-400 flex items-center justify-center text-white cursor-pointer"
+                    onClick={() => setShowDropdown((prev) => !prev)}
+                  >
+                    <User className="w-5 h-5 text-white" />
+                  </div>
+
+                  <AnimatePresence>
+                    {showDropdown && (
+                      <motion.div
+                        ref={dropdownRef}
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -10 }}
+                        transition={{ duration: 0.2 }}
+                        className="absolute right-0 top-full mt-2 w-48 bg-white dark:bg-gray-800 rounded-xl shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden z-50"
+                      >
+                        <div className="p-4 border-b border-gray-200 dark:border-gray-700">
+                          <p className="text-sm font-medium text-gray-800 dark:text-white">
+                            {randomName}
+                          </p>
+                        </div>
+
+                        <button
+                          onClick={onLogout}
+                          type="button"
+                          style={{
+                            display: "flex",
+                            width: "100%",
+                            gap: "10px",
+                            textAlign: "left",
+                            alignItems: "center",
+                            padding: "8px 16px",
+                            color: "#757e8d",
+                            backgroundColor: "transparent",
+                            border: "none",
+                            cursor: "pointer",
+                            transition: "all 0.2s ease",
+                          }}
+                          onMouseEnter={(e) => {
+                            e.target.style.backgroundColor = "#ef4444";
+                            e.target.style.color = "white";
+                          }}
+                          onMouseLeave={(e) => {
+                            e.target.style.backgroundColor = "transparent";
+                            e.target.style.color = "#757e8d";
+                          }}
+                        >
+                          <LogOut className="w-4 h-4" />
+                          <span>Chiqish</span>
+                        </button>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              </div>
+
+              {/* Mobile versiyasi */}
+              <div className="md:hidden relative flex items-center gap-3">
+                <button
+                  onClick={() => navigate("/leaderboard")}
+                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+                    activeSection === "leaderboard"
+                      ? "bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400"
+                      : "text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800"
+                  }`}
+                >
+                  Reyting
+                </button>
+
+                <div className="relative">
+                  <div
+                    ref={accountRef}
+                    className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-green-400 flex items-center justify-center text-white cursor-pointer"
+                    onClick={() => setShowDropdown((prev) => !prev)}
+                  >
+                    <User className="w-5 h-5 text-white" />
+                  </div>
+
+                  <AnimatePresence>
+                    {showDropdown && (
+                      <motion.div
+                        ref={dropdownRef}
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -10 }}
+                        transition={{ duration: 0.2 }}
+                        className="absolute right-0 top-full mt-4 w-52 bg-white dark:bg-gray-800 rounded-xl shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden z-50 p-4"
+                      >
+                        <p className="text-sm font-medium text-gray-800 dark:text-white mb-3">
+                          {randomName}
+                        </p>
+
+                        <div className="flex items-center gap-4 justify-between">
+                          <ThemeToggle />
+                          <button
+                            onClick={onLogout}
+                            className="px-4 py-2 text-sm font-medium rounded-lg bg-red-500 hover:bg-red-600 text-white transition"
+                            style={{
+                              display: "flex",
+                              width: "100%",
+                              gap: "10px",
+                              textAlign: "left",
+                              alignItems: "center",
+                              padding: "8px 16px",
+                              color: "#757e8d",
+                              backgroundColor: "transparent",
+                              border: "1px solid #757e8d",
+                              cursor: "pointer",
+                              transition: "all 0.2s ease",
+                            }}
+                          >
+                            <LogOut className="w-4 h-4 inline-block mr-1" />
+                            Chiqish
+                          </button>
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              </div>
+            </div>
+          </motion.nav>
+        </>
+      )}
+    </AnimatePresence>
   );
 }

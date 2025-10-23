@@ -9,16 +9,12 @@ import {
   User,
   Filter,
   Calendar,
-  TrendingUp,
   Award,
   Target,
   Trophy,
-  CheckCircle2,
   Star,
   Zap,
   Gift,
-  Menu,
-  X,
 } from "lucide-react";
 
 // Components
@@ -244,161 +240,27 @@ export default function Dashboard({ user, onLogout, onNavigate = () => {} }) {
 
   return (
     <div className="min-h-screen flex">
-      {/* Sidebar */}
-      <AnimatePresence>
-        {(sidebarOpen || windowWidth >= 768) && (
-          <>
-            {sidebarOpen && (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                onClick={() => setSidebarOpen(false)}
-                className="fixed inset-0 bg-black/50 z-40 md:hidden"
-              />
-            )}
-            {/* Navbar */}
-            <motion.nav
-              initial={{ y: -80, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ type: "spring", damping: 20 }}
-              className="fixed top-0 left-0 right-0 z-50 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 px-8 py-3 flex items-center justify-between theme-transition"
-            >
-              <div className="flex items-center gap-2">
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-400 to-green-400 flex items-center justify-center">
-                  <Coins className="w-6 h-6 text-white" />
-                </div>
-                <span className="text-xl text-gray-800 dark:text-white theme-transition">
-                  Wallet
-                </span>
-              </div>
-
-              <div className="hidden md:flex items-center gap-4">
-                <button
-                  onClick={() => setActiveSection("dashboard")}
-                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-                    activeSection === "dashboard"
-                      ? "bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400"
-                      : "text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800"
-                  }`}
-                >
-                  Panel
-                </button>
-                <button
-                  onClick={() => setActiveSection("leaderboard")}
-                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-                    activeSection === "leaderboard"
-                      ? "bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400"
-                      : "text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800"
-                  }`}
-                >
-                  Reyting jadvali
-                </button>
-              </div>
-
-              <div className="flex items-center gap-3 relative">
-                <ThemeToggle />
-                <LanguageToggle />
-
-                {/* Account (User icon + dropdown) */}
-                <div className="relative">
-                  <div
-                    ref={accountRef}
-                    className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-green-400 flex items-center justify-center text-white"
-                    onClick={() => setShowDropdown((prev) => !prev)}
-                  >
-                    <User className="w-5 h-5 text-white" />
-                  </div>
-
-                  <AnimatePresence>
-                    {showDropdown && (
-                      <motion.div
-                        ref={dropdownRef}
-                        initial={{ opacity: 0, y: -10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -10 }}
-                        transition={{ duration: 0.2 }}
-                        className="absolute right-0 top-full mt-2 w-48 bg-white dark:bg-gray-800 rounded-xl shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden z-50"
-                      >
-                        <div className="p-4 border-b border-gray-200 dark:border-gray-700">
-                          <p className="text-sm font-medium text-gray-800 dark:text-white">
-                            {randomName}
-                          </p>
-                        </div>
-
-                        <button
-                          onClick={onLogout}
-                          type="button"
-                          style={{
-                            display: "block",
-                            width: "100%",
-                            textAlign: "left",
-                            padding: "8px 16px",
-                            color: "#374151",
-                            backgroundColor: "transparent",
-                            border: "none",
-                            cursor: "pointer",
-                            transition: "all 0.2s ease",
-                          }}
-                          onMouseEnter={(e) => {
-                            e.target.style.backgroundColor = "#ef4444";
-                            e.target.style.color = "white"; 
-                          }}
-                          onMouseLeave={(e) => {
-                            e.target.style.backgroundColor = "transparent";
-                            e.target.style.color = "#374151";
-                          }}
-                        >
-                          Chiqish
-                        </button>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
-              </div>
-            </motion.nav>
-          </>
-        )}
-      </AnimatePresence>
-
       {/* Main Content */}
       <div className="flex-1 pt-12 p-4 sm:p-6 md:p-8 overflow-x-hidden">
-        <div className="md:hidden mb-6 flex items-center gap-4">
-          <Button
-            variant="outline"
-            size="icon"
-            onClick={() => setSidebarOpen(true)}
-            className="rounded-xl dark:bg-gray-800 dark:border-gray-700"
-          >
-            <Menu className="w-5 h-5" />
-          </Button>
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-400 to-green-400 flex items-center justify-center">
-              <Coins className="w-5 h-5 text-white" />
-            </div>
-            <span className="text-lg text-gray-800 dark:text-white theme-transition">
-              Wallet
-            </span>
-          </div>
-        </div>
-
         {activeSection === "dashboard" && (
           <div className="max-w-6xl mx-auto space-y-6 md:space-y-8">
             <div
-              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8"
-              style={{ marginTop: "50px" }}
+              className="flex flex-wrap justify-center gap-3 w-full mt-12"
+              style={{ marginTop: "60px" }}
             >
               {/* Card 1: Current Balance */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.1 }}
+                className="w-full sm:w-[calc((100%-2rem)/2)] lg:w-[calc((100%-2rem*2)/3)]"
               >
-                <Card className="w-full p-6 md:p-8 bg-gradient-to-br from-blue-400 to-green-400 border-0 shadow-xl rounded-2xl text-white relative overflow-hidden h-38">
-                  <div className="absolute top-0 right-0 w-24 h-24 md:w-32 md:h-32 bg-white/10 rounded-full -mr-12 -mt-12 md:-mr-16 md:-mt-16"></div>
-                  <div className="absolute bottom-0 left-0 w-40 h-40 md:w-48 md:h-48 bg-white/10 rounded-full -ml-20 -mb-20 md:-ml-24 md:-mb-24"></div>
+                <Card className="p-4 sm:p-6 md:p-8 bg-gradient-to-br from-blue-400 to-green-400 border-0 shadow-xl rounded-2xl text-white relative overflow-hidden h-32 sm:h-38">
+                  <div className="absolute top-0 right-0 w-16 h-16 sm:w-24 sm:h-24 md:w-32 md:h-32 bg-white/10 rounded-full -mr-8 -mt-8 sm:-mr-12 sm:-mt-12 md:-mr-16 md:-mt-16"></div>
+                  <div className="absolute bottom-0 left-0 w-28 h-28 sm:w-40 sm:h-40 md:w-48 md:h-48 bg-white/10 rounded-full -ml-14 -mb-14 sm:-ml-20 sm:-mb-20 md:-ml-24 md:-mb-24"></div>
                   <div className="relative z-10">
-                    <div className="flex items-center gap-3 mb-3">
+                    {/* flex-col faqat mobil uchun, flex-row esa desktop */}
+                    <div className="flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left gap-2 sm:gap-3 mb-2 sm:mb-3">
                       <motion.div
                         animate={{ rotate: [0, 360] }}
                         transition={{
@@ -406,12 +268,12 @@ export default function Dashboard({ user, onLogout, onNavigate = () => {} }) {
                           repeat: Infinity,
                           ease: "linear",
                         }}
-                        className="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center"
+                        className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center"
                       >
-                        <Coins className="w-5 h-5 md:w-6 md:h-6" />
+                        <Coins className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6" />
                       </motion.div>
                       <div>
-                        <p className="text-white/80 text-xs sm:text-sm">
+                        <p className="text-white/80 text-[10px] sm:text-xs md:text-sm mt-1 sm:mt-0">
                           Joriy balans
                         </p>
                         <motion.p
@@ -421,7 +283,7 @@ export default function Dashboard({ user, onLogout, onNavigate = () => {} }) {
                             delay: 0.3,
                             type: "spring",
                           }}
-                          className="text-2xl sm:text-3xl"
+                          className="text-xl sm:text-2xl md:text-3xl"
                         >
                           {currentBalance.toLocaleString()}
                         </motion.p>
@@ -436,17 +298,18 @@ export default function Dashboard({ user, onLogout, onNavigate = () => {} }) {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.2 }}
+                className="w-full sm:w-[calc((100%-2rem)/2)] lg:w-[calc((100%-2rem*2)/3)]"
               >
-                <Card className="w-full p-6 md:p-8 bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-lg rounded-2xl hover:shadow-xl transition-all theme-transition space-y-2 h-38">
-                  <div className="flex items-center gap-4 mb-4">
-                    <div className="w-12 h-12 md:w-14 md:h-14 rounded-xl bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center theme-transition">
-                      <Coins className="w-5 h-5 md:w-6 md:h-6 text-purple-600 dark:text-purple-400 theme-transition" />
+                <Card className="p-4 sm:p-6 md:p-8 bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-lg rounded-2xl hover:shadow-xl transition-all theme-transition space-y-2 h-32 sm:h-38">
+                  <div className="flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left gap-3 sm:gap-4 mb-2 sm:mb-4">
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 rounded-xl bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center theme-transition">
+                      <Coins className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 text-purple-600 dark:text-purple-400 theme-transition" />
                     </div>
-                    <div className="pl-1">
-                      <p className="text-gray-500 dark:text-gray-400 text-xs sm:text-sm theme-transition">
+                    <div>
+                      <p className="text-gray-500 dark:text-gray-400 text-[10px] sm:text-xs md:text-sm mt-1 sm:mt-0 theme-transition">
                         Umumiy balans
                       </p>
-                      <p className="text-2xl sm:text-3xl text-gray-800 dark:text-white theme-transition">
+                      <p className="text-xl sm:text-2xl md:text-3xl text-gray-800 dark:text-white theme-transition">
                         {allTimeBalance.toLocaleString()}
                       </p>
                     </div>
@@ -459,17 +322,18 @@ export default function Dashboard({ user, onLogout, onNavigate = () => {} }) {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.3 }}
+                className="w-full sm:w-[calc((100%-2rem)/2)] lg:w-[calc((100%-2rem*2)/3)]"
               >
-                <Card className="w-full p-6 md:p-8 bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-lg rounded-2xl hover:shadow-xl transition-all theme-transition space-y-2 h-38">
-                  <div className="flex items-center gap-4 mb-4">
-                    <div className="w-12 h-12 md:w-14 md:h-14 rounded-xl bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center theme-transition">
-                      <Trophy className="w-5 h-5 md:w-6 md:h-6 text-orange-600 dark:text-orange-400 theme-transition" />
+                <Card className="p-4 sm:p-6 md:p-8 bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-lg rounded-2xl hover:shadow-xl transition-all theme-transition space-y-2 h-32 sm:h-38">
+                  <div className="flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left gap-3 sm:gap-4 mb-2 sm:mb-4">
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 rounded-xl bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center theme-transition">
+                      <Trophy className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 text-orange-600 dark:text-orange-400 theme-transition" />
                     </div>
-                    <div className="pl-1">
-                      <p className="text-gray-500 dark:text-gray-400 text-xs sm:text-sm theme-transition">
+                    <div>
+                      <p className="text-gray-500 dark:text-gray-400 text-[10px] sm:text-xs md:text-sm mt-1 sm:mt-0 theme-transition">
                         O'rin
                       </p>
-                      <p className="text-2xl sm:text-3xl text-gray-800 dark:text-white theme-transition">
+                      <p className="text-xl sm:text-2xl md:text-3xl text-gray-800 dark:text-white theme-transition">
                         #{centerRank}
                       </p>
                     </div>

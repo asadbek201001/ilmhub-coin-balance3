@@ -52,7 +52,7 @@ export default function App() {
 
   return (
     <>
-      {!location.pathname.startsWith("/dashboard") && <Header />}
+      <Header />
       <ScrollToTop />
       <AppContent />
     </>

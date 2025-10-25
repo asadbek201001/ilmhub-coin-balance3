@@ -78,5 +78,5 @@ const walletsSlice = createSlice({
 });
 
 export const selectWallets = (state) => state.wallets;
-export const { resetWalletsSlice } = resetWalletsSlice.actions;
+export const { resetWalletsSlice } = walletsSlice.actions;
 export default walletsSlice.reducer;

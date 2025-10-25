@@ -1,12 +1,10 @@
 // Libraries
 import { useState, useEffect, useRef } from "react";
-import { motion, AnimatePresence } from "motion/react";
+import { motion } from "motion/react";
 import {
   Home as HomeIcon,
-  LogOut,
   Coins,
   BookOpen,
-  User,
   Filter,
   Calendar,
   Award,
@@ -18,7 +16,6 @@ import {
 } from "lucide-react";
 
 // Components
-import { Button } from "./ui/button";
 import { Card } from "./ui/card";
 import {
   Select,
@@ -27,12 +24,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./ui/select";
-import { ThemeToggle } from "./ThemeToggle";
-import { LanguageToggle } from "./LanguageToggle";
 import Leaderboard from "../pages/main/Leaderboard";
-
-// Contexts
-import { useLanguage } from "../contexts/LanguageContext";
 
 const getActivityIcon = (type) => {
   switch (type) {
@@ -92,8 +84,7 @@ const getActivityColor = (type) => {
   }
 };
 
-export default function Dashboard({ user, onLogout, onNavigate = () => {} }) {
-  const { t } = useLanguage();
+export default function Dashboard() {
   const [filterType, setFilterType] = useState("all");
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [windowWidth, setWindowWidth] = useState(
@@ -362,7 +353,7 @@ export default function Dashboard({ user, onLogout, onNavigate = () => {} }) {
                     <Filter className="w-5 h-5 text-gray-400 dark:text-gray-500" />
                     <Select value={filterType} onValueChange={setFilterType}>
                       <SelectTrigger className="w-full sm:w-40 rounded-xl border-gray-200 dark:border-gray-700 dark:bg-gray-900 theme-transition">
-                        <SelectValue placeholder={t("dashboard.filterType")} />
+                        <SelectValue placeholder={("dashboard.filterType")} />
                       </SelectTrigger>
                       <SelectContent className="dark:bg-gray-900 dark:border-gray-700">
                         <SelectItem value="all">Barchasi</SelectItem>
@@ -401,7 +392,7 @@ export default function Dashboard({ user, onLogout, onNavigate = () => {} }) {
 
                           <div className="flex-1 min-w-0">
                             <p className="text-sm sm:text-base text-gray-800 dark:text-white mb-1 theme-transition">
-                              {t(activity.titleKey)}
+                              {(activity.titleKey)}
                             </p>
                             <div className="flex flex-wrap items-center gap-2 sm:gap-3 text-xs sm:text-sm text-gray-500 dark:text-gray-400 theme-transition">
                               <span className="flex items-center gap-1">
@@ -429,7 +420,7 @@ export default function Dashboard({ user, onLogout, onNavigate = () => {} }) {
                       <Coins className="w-8 h-8 text-gray-400 dark:text-gray-600" />
                     </div>
                     <p className="text-gray-600 dark:text-gray-400 theme-transition">
-                      {t("dashboard.noActivities")}
+                      {("dashboard.noActivities")}
                     </p>
                   </div>
                 )}
@@ -504,7 +495,3 @@ function getRandomEmail() {
   const domain = domains[Math.floor(Math.random() * domains.length)];
   return `${base}${num}@${domain}`;
 }
-
-// Generate random name and email once per component mount
-const randomName = getRandomFirstLastName();
-const randomEmail = getRandomEmail();

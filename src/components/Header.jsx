@@ -22,12 +22,12 @@ export default function Header({ onLogout }) {
   // Random name (demo)
   const randomName = "Demo Student";
 
-  // 🔹 Faqat login sahifasida Header chiqmasin
+  // Hide Header on login page
   if (location.pathname === "/login") {
     return null;
   }
 
-  // 🔹 Active section highlight qilish
+  // Update active section based on current path
   useEffect(() => {
     if (location.pathname === "/") {
       setActiveSection("dashboard");
@@ -36,12 +36,13 @@ export default function Header({ onLogout }) {
     }
   }, [location.pathname]);
 
-  // 🔹 Dropdown tashqarisiga bosilganda yopish
+  // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (
         dropdownRef.current &&
         !dropdownRef.current.contains(event.target) &&
+        accountRef.current &&
         !accountRef.current.contains(event.target)
       ) {
         setShowDropdown(false);
@@ -51,6 +52,26 @@ export default function Header({ onLogout }) {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+  // Update window width on resize
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  // Handler for mobile toggle button
+  const handleMobileToggle = () => {
+    if (activeSection === "dashboard") {
+      navigate("/leaderboard");
+      setActiveSection("leaderboard");
+    } else {
+      navigate("/");
+      setActiveSection("dashboard");
+    }
+  };
 
   return (
     <AnimatePresence>
@@ -68,7 +89,7 @@ export default function Header({ onLogout }) {
               className="flex items-center gap-2 cursor-pointer"
               onClick={() => navigate("/")}
             >
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-400 to-green-400 flex items-center justify-center">
+              <div className="w-10 h-10 rounded-xl flex items-center justify-center">
                 <Coins className="w-6 h-6 text-white" />
               </div>
               <span className="text-xl text-gray-800 dark:text-white theme-transition">
@@ -82,8 +103,8 @@ export default function Header({ onLogout }) {
                 onClick={() => navigate("/")}
                 className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
                   activeSection === "dashboard"
-                    ? "bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400"
-                    : "text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800"
+                    ? "text-blue-600 dark:text-blue-400"
+                    : "text-gray-600 dark:text-gray-300 hover:dark:bg-gray-800 hover:bg-gray-50"
                 }`}
               >
                 Panel
@@ -92,8 +113,8 @@ export default function Header({ onLogout }) {
                 onClick={() => navigate("/leaderboard")}
                 className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
                   activeSection === "leaderboard"
-                    ? "bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400"
-                    : "text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800"
+                    ? "text-blue-600 dark:text-blue-400"
+                    : "text-gray-600 dark:text-gray-300 hover:dark:bg-gray-800 hover:bg-gray-50"
                 }`}
               >
                 Reyting jadvali
@@ -102,14 +123,17 @@ export default function Header({ onLogout }) {
 
             {/* Account Section */}
             <div className="flex items-center gap-3 relative">
-              {/* Desktop versiyasi */}
+              {/* Desktop version */}
               <div className="hidden md:flex items-center gap-3 relative">
                 <ThemeToggle />
                 <div className="relative">
                   <div
                     ref={accountRef}
-                    className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-green-400 flex items-center justify-center text-white cursor-pointer"
+                    className="w-10 h-10 rounded-full flex items-center justify-center text-white cursor-pointer"
                     onClick={() => setShowDropdown((prev) => !prev)}
+                    aria-haspopup="true"
+                    aria-expanded={showDropdown}
+                    aria-label="Account menu"
                   >
                     <User className="w-5 h-5 text-white" />
                   </div>
@@ -123,6 +147,8 @@ export default function Header({ onLogout }) {
                         exit={{ opacity: 0, y: -10 }}
                         transition={{ duration: 0.2 }}
                         className="absolute right-0 top-full mt-2 w-48 bg-white dark:bg-gray-800 rounded-xl shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden z-50"
+                        role="menu"
+                        aria-label="Account dropdown"
                       >
                         <div className="p-4 border-b border-gray-200 dark:border-gray-700">
                           <p className="text-sm font-medium text-gray-800 dark:text-white">
@@ -154,6 +180,7 @@ export default function Header({ onLogout }) {
                             e.target.style.backgroundColor = "transparent";
                             e.target.style.color = "#757e8d";
                           }}
+                          role="menuitem"
                         >
                           <LogOut className="w-4 h-4" />
                           <span>Chiqish</span>
@@ -164,24 +191,27 @@ export default function Header({ onLogout }) {
                 </div>
               </div>
 
-              {/* Mobile versiyasi */}
+              {/* Mobile version */}
               <div className="md:hidden relative flex items-center gap-3">
                 <button
-                  onClick={() => navigate("/leaderboard")}
+                  onClick={handleMobileToggle}
                   className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
                     activeSection === "leaderboard"
-                      ? "bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400"
-                      : "text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800"
+                      ? "text-blue-600 dark:text-blue-400"
+                      : "text-gray-600 dark:text-gray-300 hover:dark:bg-gray-800 hover:bg-gray-50"
                   }`}
                 >
-                  Reyting
+                  {activeSection === "dashboard" ? "Reyting" : "Panel"}
                 </button>
 
                 <div className="relative">
                   <div
                     ref={accountRef}
-                    className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-green-400 flex items-center justify-center text-white cursor-pointer"
+                    className="w-10 h-10 rounded-full flex items-center justify-center text-white cursor-pointer"
                     onClick={() => setShowDropdown((prev) => !prev)}
+                    aria-haspopup="true"
+                    aria-expanded={showDropdown}
+                    aria-label="Account menu"
                   >
                     <User className="w-5 h-5 text-white" />
                   </div>
@@ -195,6 +225,8 @@ export default function Header({ onLogout }) {
                         exit={{ opacity: 0, y: -10 }}
                         transition={{ duration: 0.2 }}
                         className="absolute right-0 top-full mt-4 w-52 bg-white dark:bg-gray-800 rounded-xl shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden z-50 p-4"
+                        role="menu"
+                        aria-label="Account dropdown"
                       >
                         <p className="text-sm font-medium text-gray-800 dark:text-white mb-3">
                           {randomName}
@@ -204,22 +236,18 @@ export default function Header({ onLogout }) {
                           <ThemeToggle />
                           <button
                             onClick={onLogout}
-                            className="px-4 py-2 text-sm font-medium rounded-lg bg-red-500 hover:bg-red-600 text-white transition"
+                            className="px-4 py-2 text-sm font-medium rounded-lg text-white transition flex items-center gap-2"
                             style={{
-                              display: "flex",
                               width: "100%",
-                              gap: "10px",
                               textAlign: "left",
-                              alignItems: "center",
                               padding: "8px 16px",
-                              color: "#757e8d",
-                              backgroundColor: "transparent",
-                              border: "1px solid #757e8d",
+                              border: "1px solid transparent",
                               cursor: "pointer",
                               transition: "all 0.2s ease",
                             }}
+                            role="menuitem"
                           >
-                            <LogOut className="w-4 h-4 inline-block mr-1" />
+                            <LogOut className="w-4 h-4" />
                             Chiqish
                           </button>
                         </div>

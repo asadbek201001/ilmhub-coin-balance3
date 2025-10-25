@@ -10,7 +10,6 @@ import App from "./App.jsx";
 import { store } from "./utils/redux/store.js";
 
 // Context Providers
-import { LanguageProvider } from "./contexts/LanguageContext.jsx";
 import { ThemeProvider } from "./contexts/ThemeContext.jsx";
 
 // Style
@@ -21,7 +20,6 @@ const container = document.getElementById("root");
 const root = createRoot(container);
 
 root.render(
-  <LanguageProvider>
     <ThemeProvider>
       <Provider store={store}>
         <BrowserRouter>
@@ -29,5 +27,4 @@ root.render(
         </BrowserRouter>
       </Provider>
     </ThemeProvider>
-  </LanguageProvider>
 );

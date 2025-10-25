@@ -5,9 +5,11 @@ import { persistReducer, createTransform } from "redux-persist";
 import storageSession from "redux-persist/lib/storage/session";
 
 // Slices
+import walletsSlice from "./walletsSlice";
 
 // All reducers merging
 const rootReducer = combineReducers({
+  wallets: walletsSlice,
 });
 
 // Transform

@@ -20,5 +20,10 @@ axios.interceptors.request.use(
 );
 
 // API Prefixes
+const WALLETS_API_PREFIX = "/api/Wallets";
 
-
+// ===== Wallets API =====
+export const walletsApi = {
+  getWallets: () => axios.get(`${WALLETS_API_PREFIX}`),
+  getWalletsLeaderboard: () => axios.get(`${WALLETS_API_PREFIX}/leaderboard`),
+};

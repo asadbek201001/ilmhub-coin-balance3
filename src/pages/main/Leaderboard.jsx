@@ -1,6 +1,6 @@
 // Libraries
 import { motion } from "framer-motion";
-import { Trophy, Medal, TrendingUp } from "lucide-react";
+import { Trophy, Medal } from "lucide-react";
 import { useNavigate } from "react-router";
 
 // Components
@@ -15,71 +15,51 @@ const studentsData = [
   {
     id: 1,
     name: "Sarah Ahmed",
-    avatar: "👩‍🎓",
-    currentBalance: 2450,
     allTimeBalance: 5800,
   },
   {
     id: 2,
     name: "Michael Chen",
-    avatar: "👨‍🎓",
-    currentBalance: 2280,
     allTimeBalance: 5200,
   },
   {
     id: 3,
     name: "Aisha Khan",
-    avatar: "👩‍🎓",
-    currentBalance: 2150,
     allTimeBalance: 4900,
   },
   {
     id: 4,
     name: "David Rodriguez",
-    avatar: "👨‍🎓",
-    currentBalance: 1980,
     allTimeBalance: 4500,
   },
   {
     id: 5,
     name: "Emma Wilson",
-    avatar: "👩‍🎓",
-    currentBalance: 1850,
     allTimeBalance: 4200,
   },
   {
     id: 6,
     name: "James Taylor",
-    avatar: "👨‍🎓",
-    currentBalance: 1720,
     allTimeBalance: 3900,
   },
   {
     id: 7,
     name: "Olivia Brown",
-    avatar: "👩‍🎓",
-    currentBalance: 1650,
     allTimeBalance: 3700,
   },
   {
     id: 8,
     name: "Lucas Martinez",
-    avatar: "👨‍🎓",
-    currentBalance: 1580,
     allTimeBalance: 3500,
   },
   {
     id: 9,
     name: "Sophia Anderson",
-    avatar: "👩‍🎓",
-    currentBalance: 1490,
     allTimeBalance: 3300,
   },
   {
     id: 10,
     name: "Noah Johnson",
-    avatar: "👨‍🎓",
-    currentBalance: 1420,
     allTimeBalance: 3100,
   },
 ];
@@ -88,71 +68,51 @@ const teachersData = [
   {
     id: 1,
     name: "Prof. Elizabeth Hart",
-    avatar: "👩‍🏫",
-    currentBalance: 5800,
     allTimeBalance: 12500,
   },
   {
     id: 2,
     name: "Dr. Robert Mitchell",
-    avatar: "👨‍🏫",
-    currentBalance: 5200,
     allTimeBalance: 11800,
   },
   {
     id: 3,
     name: "Prof. Maria Garcia",
-    avatar: "👩‍🏫",
-    currentBalance: 4900,
     allTimeBalance: 11200,
   },
   {
     id: 4,
     name: "Dr. Ahmed Hassan",
-    avatar: "👨‍🏫",
-    currentBalance: 4500,
     allTimeBalance: 10500,
   },
   {
     id: 5,
     name: "Prof. Linda White",
-    avatar: "👩‍🏫",
-    currentBalance: 4200,
     allTimeBalance: 9800,
   },
   {
     id: 6,
     name: "Dr. Kevin Park",
-    avatar: "👨‍🏫",
-    currentBalance: 100900,
     allTimeBalance: 922200,
   },
   {
     id: 7,
     name: "Prof. Rachel Green",
-    avatar: "👩‍🏫",
-    currentBalance: 3700,
     allTimeBalance: 8900,
   },
   {
     id: 8,
     name: "Dr. Thomas Lee",
-    avatar: "👨‍🏫",
-    currentBalance: 3500,
     allTimeBalance: 8500,
   },
   {
     id: 9,
     name: "Prof. Jennifer Kim",
-    avatar: "👩‍🏫",
-    currentBalance: 3300,
     allTimeBalance: 8100,
   },
   {
     id: 10,
     name: "Dr. Christopher Davis",
-    avatar: "👨‍🏫",
-    currentBalance: 3100,
     allTimeBalance: 7800,
   },
 ];
@@ -161,71 +121,51 @@ const adminsData = [
   {
     id: 1,
     name: "Sarah Johnson",
-    avatar: "👩‍💼",
-    currentBalance: 8500,
     allTimeBalance: 18000,
   },
   {
     id: 2,
     name: "Michael Wong",
-    avatar: "👨‍💼",
-    currentBalance: 7800,
     allTimeBalance: 16500,
   },
   {
     id: 3,
     name: "Emily Zhang",
-    avatar: "👩‍💼",
-    currentBalance: 7200,
     allTimeBalance: 15200,
   },
   {
     id: 4,
     name: "David Kumar",
-    avatar: "👨‍💼",
-    currentBalance: 6800,
     allTimeBalance: 14500,
   },
   {
     id: 5,
     name: "Lisa Anderson",
-    avatar: "👩‍💼",
-    currentBalance: 6200,
     allTimeBalance: 13800,
   },
   {
     id: 6,
     name: "Robert Chen",
-    avatar: "👨‍💼",
-    currentBalance: 5900,
     allTimeBalance: 13200,
   },
   {
     id: 7,
     name: "Maria Lopez",
-    avatar: "👩‍💼",
-    currentBalance: 5500,
     allTimeBalance: 12500,
   },
   {
     id: 8,
     name: "James Park",
-    avatar: "👨‍💼",
-    currentBalance: 5200,
     allTimeBalance: 11900,
   },
   {
     id: 9,
     name: "Sophie Taylor",
-    avatar: "👩‍💼",
-    currentBalance: 4800,
     allTimeBalance: 11200,
   },
   {
     id: 10,
     name: "Alex Martinez",
-    avatar: "👨‍💼",
-    currentBalance: 4500,
     allTimeBalance: 10800,
   },
 ];
@@ -233,33 +173,6 @@ const adminsData = [
 export default function Leaderboard() {
   const { t } = useLanguage();
   const navigate = useNavigate();
-
-  let allData = [
-    ...studentsData.map((item) => ({ ...item, role: "student" })),
-    ...teachersData.map((item) => ({ ...item, role: "teacher" })),
-    ...adminsData.map((item) => ({ ...item, role: "admin" })),
-  ]
-    .sort((a, b) => b.allTimeBalance - a.allTimeBalance)
-    .slice(0, 10);
-
-  // 👉 Studentni 3-o‘ringa olib chiqamiz
-  const topStudent = studentsData[0]
-    ? { ...studentsData[0], role: "student" }
-    : null;
-
-  if (topStudent) {
-    const alreadyExists = allData.find((item) => item.id === topStudent.id);
-    if (!alreadyExists) {
-      allData.pop();
-      allData.push(topStudent);
-    }
-
-    const filtered = allData.filter((item) => item.id !== topStudent.id);
-    filtered.splice(2, 0, topStudent);
-    allData = filtered;
-  }
-
-  const data = allData;
 
   const getMedalIcon = (rank) => {
     switch (rank) {
@@ -335,11 +248,6 @@ export default function Leaderboard() {
                     Ism
                   </p>
                 </div>
-                <div className="col-span-3">
-                  <p className="text-sm text-gray-600 dark:text-gray-400 theme-transition">
-                    Joriy balans
-                  </p>
-                </div>
                 <div className="col-span-3 flex items-center justify-between">
                   <p className="text-sm text-gray-600 dark:text-gray-400 theme-transition">
                     Umumiy balans
@@ -349,7 +257,7 @@ export default function Leaderboard() {
 
               {/* Table Body */}
               <div className="divide-y divide-gray-200 dark:divide-gray-700">
-                {data.map((user, index) => {
+                {studentsData.map((user, index) => {
                   const rank = index + 1;
                   return (
                     <div key={user.id}>
@@ -368,7 +276,6 @@ export default function Leaderboard() {
                         </div>
 
                         <div className="col-span-5 flex items-center gap-3">
-                          <div className="text-3xl">{user.avatar}</div>
                           <div>
                             <p className="text-gray-800 dark:text-white theme-transition">
                               {user.name}
@@ -391,26 +298,8 @@ export default function Leaderboard() {
                         </div>
 
                         <div className="col-span-3 flex items-center">
-                          <div className="flex items-center gap-2 px-4 py-2 bg-blue-50 dark:bg-blue-900/20 rounded-xl theme-transition">
-                            <TrendingUp className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                          <div className="flex items-center gap-2 px-4 py-2 rounded-xl theme-transition">
                             <div>
-                              <p className="text-xs text-blue-600 dark:text-blue-400 theme-transition">
-                                Joriy
-                              </p>
-                              <p className="text-gray-800 dark:text-white theme-transition">
-                                {user.currentBalance.toLocaleString()}
-                              </p>
-                            </div>
-                          </div>
-                        </div>
-
-                        <div className="col-span-3 flex items-center">
-                          <div className="flex items-center gap-2 px-4 py-2 bg-green-50 dark:bg-green-900/20 rounded-xl theme-transition">
-                            <Trophy className="w-5 h-5 text-green-600 dark:text-green-400" />
-                            <div>
-                              <p className="text-xs text-green-600 dark:text-green-400 theme-transition">
-                                Umumiy
-                              </p>
                               <p className="text-gray-800 dark:text-white theme-transition">
                                 {user.allTimeBalance.toLocaleString()}
                               </p>
@@ -427,7 +316,7 @@ export default function Leaderboard() {
 
           {/* Mobile Card View */}
           <div className="md:hidden space-y-3 sm:space-y-4">
-            {data.map((user, index) => {
+            {studentsData.map((user, index) => {
               const rank = index + 1;
               return (
                 <motion.div
@@ -448,9 +337,6 @@ export default function Leaderboard() {
                       <div className="flex items-center gap-2 sm:gap-3">
                         <div className="flex-shrink-0">
                           {getMedalIcon(rank)}
-                        </div>
-                        <div className="text-2xl sm:text-3xl">
-                          {user.avatar}
                         </div>
                         <div className="flex-1 min-w-0">
                           <p className="text-sm sm:text-base text-gray-800 dark:text-white truncate theme-transition">
@@ -475,24 +361,8 @@ export default function Leaderboard() {
 
                       {/* Balances */}
                       <div className="grid grid-cols-2 gap-2 sm:gap-3">
-                        <div className="flex items-center gap-1.5 sm:gap-2 px-2 sm:px-3 py-2 sm:py-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg sm:rounded-xl theme-transition">
-                          <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600 dark:text-blue-400 flex-shrink-0" />
-                          <div className="min-w-0">
-                            <p className="text-[10px] sm:text-xs text-blue-600 dark:text-blue-400 theme-transition">
-                              {t("leaderboard.current")}
-                            </p>
-                            <p className="text-xs sm:text-sm text-gray-800 dark:text-white truncate theme-transition">
-                              {user.currentBalance.toLocaleString()}
-                            </p>
-                          </div>
-                        </div>
-
                         <div className="flex items-center gap-1.5 sm:gap-2 px-2 sm:px-3 py-2 sm:py-3 bg-green-50 dark:bg-green-900/20 rounded-lg sm:rounded-xl theme-transition">
-                          <Trophy className="w-4 h-4 sm:w-5 sm:h-5 text-green-600 dark:text-green-400 flex-shrink-0" />
                           <div className="min-w-0">
-                            <p className="text-[10px] sm:text-xs text-green-600 dark:text-green-400 theme-transition">
-                              {t("leaderboard.allTime")}
-                            </p>
                             <p className="text-xs sm:text-sm text-gray-800 dark:text-white truncate theme-transition">
                               {user.allTimeBalance.toLocaleString()}
                             </p>
